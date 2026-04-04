@@ -23,8 +23,9 @@ python3 scripts/parse_outline.py --outline <大纲文件> --output <输出目录
 
 ## 输出
 
-每章一个 prompt 文件（`.txt`）+ `chapters.json`（供 batch_generate.py 使用）
+- 每章一个 prompt 文件（`.txt`），可直接配合小说生成工具使用
+- 汇总文件 `chapters.json`，包含所有章节信息
 
-## 衔接逻辑
+## 约束
 
-生成第N章prompt时，自动读取第N-1章已写好的内容结尾300字，注入「前章衔接」约束，保证连贯性。
+每个 prompt 自动注入硬性约束：纯中文、零AI标记词、字数12000+、忠于大纲。
