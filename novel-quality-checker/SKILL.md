@@ -1,5 +1,5 @@
 ---
-name: novel-quality-checker-cn
+name: novel-quality-checker
 description: >
   检查小说章节质量：字数、中文纯度、AI标记、模板化结尾、段落长度等8项指标。
   支持单章和批量检查，输出审核报告。
