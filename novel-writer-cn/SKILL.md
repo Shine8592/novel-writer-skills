@@ -2,7 +2,7 @@
 name: novel-writer-cn
 description: >
   批量生成网络小说章节。从大纲文件自动生成每章prompt，后台连续写作，
-  自动分段合并，支持多API切换和重试。适用于中文网文（玄幻、修仙、都市等）。
+  自动分段生成，支持多API切换和重试。适用于中文网文（玄幻、修仙、都市等）。
   使用场景：用户给出大纲并要求"批量生成章节"、"写第X章到第Y章"、"直接开始写"、
   "不用问直接生成"、"后台静默写作"。NOT for: 单章精修、人工审稿、出版级校对。
 ---
@@ -13,48 +13,28 @@ description: >
 
 1. 确认大纲文件和章节范围
 2. 读 `references/api-config.md` 获取可用API
-3. 运行 `scripts/batch_generate.sh` 或手动调用脚本
+3. 运行 `scripts/batch_generate.py` 或直接调用
 
 ## Workflow
 
 ```
-大纲 → 拆解逐章prompt → 逐个调用API → 分段合并 → 保存文件 → 更新状态
+大纲 → 逐章prompt → 逐个调用API → 分段生成 → 保存文件
 ```
 
 ## 关键规则
 
 ### 分段生成
-单次API最大输出 ~8000 汉字。章长12000+ 必须分段：
-- 第一段：8000-10000字
-- 后续段：补到12000+
-- 合并时去重结尾重叠（200字窗口匹配）
+单次API最大输出受限于模型的 max_tokens 参数。当章节内容超过单次输出上限时，
+脚本会自动分段追加生成，直到达到目标字数（默认12000字）。
 
-### 硬编码约束（注入每章prompt）
-```
-1. 纯中文！数字用中文写法(一二三十)，零阿拉伯数字零英文
-2. 零AI标记词汇（不得出现"暗思涌起""心理描写""环境描写""动作描写""命运的齿轮开始了转动"等）
-3. 主角姓名统一，不可出现不同名字
-4. 禁止模板化结尾（"真正的危机才刚刚开始"、"未完待续"）
-5. 每章12000-18000字
-6. 忠于大纲，不自由发挥核心剧情
-```
-
-### API 选择顺序
-1. **ModelScope** (deepseek-ai/DeepSeek-V3.2) — 主力，最稳定
-2. **Fyra** (mistral-large-3-675b-instruct) — 主笔备份
+### API 容错
+脚本按以下顺序尝试 API：
+1. **ModelScope** (deepseek-ai/DeepSeek-V3.2) — 主力
+2. **Fyra** (mistral-large-3-675b-instruct) — 备份
 3. **Ph8** (qwen3-235b-a22b-2507) — 短文本补位
 
-每个API调用间隔 ≥15 秒，429 → 等 30-60 秒重试。
-
-## 文件结构输出
-```
-<项目目录>/<卷号>/
-├── 0001_章节名.md
-├── 0002_章节名.md
-├── ...
-└── __流水线状态.md
-```
+每个API 429 限流后自动等 30-60 秒重试，失败后切下一个API。
 
 ## References
-- API 配置状态 → `references/api-config.md`
-- 章节prompt模板 → `references/prompt-template.md`
+- API 配置 → `references/api-config.md`
+- Prompt 模板 → `references/prompt-template.md`
