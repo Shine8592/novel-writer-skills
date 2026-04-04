@@ -1,5 +1,5 @@
 ---
-name: novel-quality-checker
+name: novel-quality-checker-cn
 description: >
   检查小说章节质量：字数、重复率、AI标记、大纲符合度、语法错误等。
   支持单章和批量检查，输出详细审核报告。

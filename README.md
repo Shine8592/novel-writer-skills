@@ -74,13 +74,13 @@ openclaw gateway restart
 
 ```bash
 # ① 解析大纲 -> 逐章 prompt
-python3 novel-outliner/scripts/parse_outline.py --outline 大纲.md --output prompts/
+python3 novel-outliner-cn/scripts/parse_outline.py --outline 大纲.md --output prompts/
 
 # ② 批量生成章节
-python3 novel-writer/scripts/batch_generate.py --start 1 --end 50 --output chapters/
+python3 novel-writer-cn/scripts/batch_generate.py --start 1 --end 50 --output chapters/
 
 # ③ 质量审核
-python3 novel-quality-checker/scripts/quality_check.py --dir chapters/ --full
+python3 novel-quality-checker-cn/scripts/quality_check.py --dir chapters/ --full
 ```
 
 ---
@@ -95,7 +95,7 @@ python3 novel-quality-checker/scripts/quality_check.py --dir chapters/ --full
 > **输出：** 每章独立写作 prompt + `chapters.json`
 
 ```bash
-python3 novel-outliner/scripts/parse_outline.py --outline 大纲.md --output prompts/
+python3 novel-outliner-cn/scripts/parse_outline.py --outline 大纲.md --output prompts/
 ```
 
 **核心能力：**
@@ -123,13 +123,13 @@ prompts/
 
 ```bash
 # 全卷批量生成
-python3 novel-writer/scripts/batch_generate.py --start 1 --end 50 --output chapters/
+python3 novel-writer-cn/scripts/batch_generate.py --start 1 --end 50 --output chapters/
 
 # 指定范围
-python3 novel-writer/scripts/batch_generate.py --start 23 --end 30 --output chapters/
+python3 novel-writer-cn/scripts/batch_generate.py --start 23 --end 30 --output chapters/
 
 # 强制使用特定 API
-python3 novel-writer/scripts/batch_generate.py --start 1 --end 10 --api fyra --output chapters/
+python3 novel-writer-cn/scripts/batch_generate.py --start 1 --end 10 --api fyra --output chapters/
 ```
 
 **核心能力：**
@@ -149,7 +149,7 @@ python3 novel-writer/scripts/batch_generate.py --start 1 --end 10 --api fyra --o
 | Fyra | Qwen3-Next-80B | ~4,000 字/次 | 每日免费额度 | 短文本补位 | ✅ |
 | Ph8 | Qwen3-235B | ~4,000 字/次 | 免费 | 扩写碎片 | ⚠️ |
 
-> 完整 API 配置见 [`novel-writer/references/api-config.md`](novel-writer/references/api-config.md)
+> 完整 API 配置见 [`novel-writer-cn/references/api-config.md`](novel-writer-cn/references/api-config.md)
 
 **输出结构：**
 ```
@@ -170,13 +170,13 @@ chapters/
 
 ```bash
 # 快速检查（5 项核心）
-python3 novel-quality-checker/scripts/quality_check.py --file chapters/0001_废物少年.md --quick
+python3 novel-quality-checker-cn/scripts/quality_check.py --file chapters/0001_废物少年.md --quick
 
 # 全量审核（33 维度）
-python3 novel-quality-checker/scripts/quality_check.py --file chapters/0001_废物少年.md --full
+python3 novel-quality-checker-cn/scripts/quality_check.py --file chapters/0001_废物少年.md --full
 
 # 批量扫描全书
-python3 novel-quality-checker/scripts/quality_check.py --dir chapters/ --full
+python3 novel-quality-checker-cn/scripts/quality_check.py --dir chapters/ --full
 ```
 
 **审核维度一览：**
@@ -334,18 +334,18 @@ python3 novel-quality-checker/scripts/quality_check.py --dir chapters/ --full
 # 大纲格式见下方"大纲格式要求"
 
 # 第二步：解析大纲 -> 逐章 prompt
-python3 novel-outliner/scripts/parse_outline.py \
+python3 novel-outliner-cn/scripts/parse_outline.py \
     --outline "太初道果_第一卷大纲.md" \
     --output "太初道果/prompts/"
 
 # 第三步：批量生成（全程零成本）
-python3 novel-writer/scripts/batch_generate.py \
+python3 novel-writer-cn/scripts/batch_generate.py \
     --outline "太初道果/prompts/chapters.json" \
     --start 1 --end 50 \
     --output "太初道果/第1卷/"
 
 # 第四步：质量审核
-python3 novel-quality-checker/scripts/quality_check.py \
+python3 novel-quality-checker-cn/scripts/quality_check.py \
     --dir "太初道果/第1卷/" --full
 
 # 第五步：修复不合格章节（如有）
@@ -359,18 +359,18 @@ python3 novel-quality-checker/scripts/quality_check.py \
 ```
 novel-writer-skills/
 ├── README.md                                    # 本文件
-├── novel-outliner/                              # 大纲解析器
+├── novel-outliner-cn/                              # 大纲解析器
 │   ├── SKILL.md                                 # 技能说明
 │   └── scripts/
 │       └── parse_outline.py                     # 解析脚本
-├── novel-writer/                                # 批量生成引擎
+├── novel-writer-cn/                                # 批量生成引擎
 │   ├── SKILL.md                                 # 技能说明
 │   ├── scripts/
 │   │   └── batch_generate.py                    # 批量生成脚本
 │   └── references/
 │       ├── api-config.md                         # API 配置
 │       └── prompt-template.md                    # Prompt 模板
-└── novel-quality-checker/                        # 质量审核
+└── novel-quality-checker-cn/                        # 质量审核
     ├── SKILL.md                                  # 技能说明
     └── scripts/
         └── quality_check.py                      # 审核脚本
@@ -435,11 +435,11 @@ novel-writer-skills/
 
 ### Q: 可以自定义约束吗？
 
-可以。在 `novel-writer/scripts/batch_generate.py` 中修改 `HARD_CONSTRAINTS` 常量，或在 prompt 中注入额外约束。
+可以。在 `novel-writer-cn/scripts/batch_generate.py` 中修改 `HARD_CONSTRAINTS` 常量，或在 prompt 中注入额外约束。
 
 ### Q: 支持其他 AI 服务吗？
 
-支持任何 OpenAI-Compatible API。只需在 `novel-writer/references/api-config.md` 中添加配置。
+支持任何 OpenAI-Compatible API。只需在 `novel-writer-cn/references/api-config.md` 中添加配置。
 
 ---
 

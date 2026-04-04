@@ -1,5 +1,5 @@
 ---
-name: novel-writer
+name: novel-writer-cn
 description: >
   批量生成网络小说章节。从大纲文件自动生成每章prompt，后台连续写作，
   自动分段合并，支持多API切换和重试。适用于中文网文（玄幻、修仙、都市等）。

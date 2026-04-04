@@ -1,5 +1,5 @@
 ---
-name: novel-outliner
+name: novel-outliner-cn
 description: >
   从小说大纲自动拆解逐章prompt。支持纯文本、JSON、Markdown格式大纲，
   一键生成每章写作指令。
